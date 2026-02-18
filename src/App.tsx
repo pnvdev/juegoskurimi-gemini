@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Slideshow from './components/Slideshow/Slideshow';
+import ProductsPage from './components/ProductsPage';
 import './App.css';
 
-const FeaturedProducts: React.FC = () => {
+const FeaturedProducts: React.FC<{ onViewProducts: () => void }> = ({ onViewProducts }) => {
   const products = [
     { id: 1, name: 'Caracol de Arrastre', price: '$4.500', image: '/assets/featured-1.png' },
     { id: 2, name: 'Cubo Fauna', price: '$6.200', image: '/assets/featured-2.png' },
@@ -22,22 +23,24 @@ const FeaturedProducts: React.FC = () => {
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <span className="price">{product.price}</span>
-                <button className="add-to-cart">Ver Detalles</button>
+                <button className="add-to-cart" onClick={onViewProducts}>Ver Detalles</button>
               </div>
             </div>
           ))}
+        </div>
+        <div style={{ marginTop: '50px' }}>
+          <button className="cta-button" onClick={onViewProducts}>Ver Catálogo Completo</button>
         </div>
       </div>
     </section>
   );
 };
 
-const App: React.FC = () => {
+const Home: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) => {
   return (
-    <div className="App">
-      <Navbar />
+    <>
       <Slideshow />
-      <FeaturedProducts />
+      <FeaturedProducts onViewProducts={() => setPage('products')} />
       
       <section id="puzzles" className="puzzles-section">
         <div className="container">
@@ -46,14 +49,14 @@ const App: React.FC = () => {
             <p className="section-subtitle">¡Llegó el cartón! Descubrí nuestra nueva línea de rompecabezas coloridos y resistentes.</p>
           </div>
           <div className="puzzles-grid">
-            <div className="puzzle-item">
+            <div className="puzzle-item" onClick={() => setPage('products')}>
               <img src="/assets/hero-2.png" alt="Puzzle Bichito" />
               <div className="puzzle-overlay">
                 <h3>Línea Bichitos</h3>
                 <p>24 piezas de pura diversión.</p>
               </div>
             </div>
-            <div className="puzzle-item">
+            <div className="puzzle-item" onClick={() => setPage('products')}>
               <img src="/assets/hero-1.png" alt="Puzzle Auto" />
               <div className="puzzle-overlay">
                 <h3>Línea Aventura</h3>
@@ -79,6 +82,21 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
+    </>
+  );
+};
+
+const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  return (
+    <div className="App">
+      <Navbar setPage={setCurrentPage} />
+      {currentPage === 'home' ? (
+        <Home setPage={setCurrentPage} />
+      ) : (
+        <ProductsPage />
+      )}
       <footer className="footer">
         <div className="container">
           <div className="footer-grid">
@@ -89,9 +107,9 @@ const App: React.FC = () => {
             <div className="footer-links">
               <h4>Enlaces</h4>
               <ul>
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#productos">Productos</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
+                <li><button onClick={() => setCurrentPage('home')} className="link-btn">Inicio</button></li>
+                <li><button onClick={() => setCurrentPage('products')} className="link-btn">Productos</button></li>
+                <li><button className="link-btn">Nosotros</button></li>
               </ul>
             </div>
             <div className="footer-contact">
