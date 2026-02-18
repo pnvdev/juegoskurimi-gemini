@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Slideshow from './components/Slideshow/Slideshow';
 import ProductsPage from './components/ProductsPage';
+import ContactPage from './components/ContactPage';
 import './App.css';
 
-const FeaturedProducts: React.FC<{ onViewProducts: () => void }> = ({ onViewProducts }) => {
+const FeaturedProducts: React.FC = () => {
   const products = [
     { id: 1, name: 'Caracol de Arrastre', price: '$4.500', image: '/assets/featured-1.png' },
     { id: 2, name: 'Cubo Fauna', price: '$6.200', image: '/assets/featured-2.png' },
@@ -23,24 +25,24 @@ const FeaturedProducts: React.FC<{ onViewProducts: () => void }> = ({ onViewProd
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <span className="price">{product.price}</span>
-                <button className="add-to-cart" onClick={onViewProducts}>Ver Detalles</button>
+                <Link to="/productos" className="add-to-cart">Ver Detalles</Link>
               </div>
             </div>
           ))}
         </div>
         <div style={{ marginTop: '50px' }}>
-          <button className="cta-button" onClick={onViewProducts}>Ver Catálogo Completo</button>
+          <Link to="/productos" className="cta-button">Ver Catálogo Completo</Link>
         </div>
       </div>
     </section>
   );
 };
 
-const Home: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) => {
+const Home: React.FC = () => {
   return (
     <>
-      <Slideshow />
-      <FeaturedProducts onViewProducts={() => setPage('products')} />
+      <Slideshow onCtaClick={() => { window.location.href = '/productos'; }} />
+      <FeaturedProducts />
       
       <section id="puzzles" className="puzzles-section">
         <div className="container">
@@ -49,20 +51,20 @@ const Home: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) => {
             <p className="section-subtitle">¡Llegó el cartón! Descubrí nuestra nueva línea de rompecabezas coloridos y resistentes.</p>
           </div>
           <div className="puzzles-grid">
-            <div className="puzzle-item" onClick={() => setPage('products')}>
+            <Link to="/productos" className="puzzle-item">
               <img src="/assets/hero-2.png" alt="Puzzle Bichito" />
               <div className="puzzle-overlay">
                 <h3>Línea Bichitos</h3>
                 <p>24 piezas de pura diversión.</p>
               </div>
-            </div>
-            <div className="puzzle-item" onClick={() => setPage('products')}>
+            </Link>
+            <Link to="/productos" className="puzzle-item">
               <img src="/assets/hero-1.png" alt="Puzzle Auto" />
               <div className="puzzle-overlay">
                 <h3>Línea Aventura</h3>
                 <p>Desafíos que estimulan la mente.</p>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -87,43 +89,43 @@ const Home: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) => {
 };
 
 const App: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-
   return (
-    <div className="App">
-      <Navbar setPage={setCurrentPage} />
-      {currentPage === 'home' ? (
-        <Home setPage={setCurrentPage} />
-      ) : (
-        <ProductsPage />
-      )}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-grid">
-            <div className="footer-info">
-              <h3>Juegos<span>Kurimi</span></h3>
-              <p>Fabricación artesanal de juguetes didácticos en madera.</p>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<ProductsPage />} />
+          <Route path="/contacto" element={<ContactPage />} />
+        </Routes>
+        <footer className="footer">
+          <div className="container">
+            <div className="footer-grid">
+              <div className="footer-info">
+                <h3>Juegos<span>Kurimi</span></h3>
+                <p>Fabricación artesanal de juguetes didácticos en madera.</p>
+              </div>
+              <div className="footer-links">
+                <h4>Enlaces</h4>
+                <ul>
+                  <li><Link to="/" className="link-btn">Inicio</Link></li>
+                  <li><Link to="/productos" className="link-btn">Productos</Link></li>
+                  <li><Link to="/contacto" className="link-btn">Contacto</Link></li>
+                </ul>
+              </div>
+              <div className="footer-contact">
+                <h4>Contacto</h4>
+                <p>Email: hola@juegoskurimi.com</p>
+                <p>WhatsApp: +54 9 11 1234 5678</p>
+              </div>
             </div>
-            <div className="footer-links">
-              <h4>Enlaces</h4>
-              <ul>
-                <li><button onClick={() => setCurrentPage('home')} className="link-btn">Inicio</button></li>
-                <li><button onClick={() => setCurrentPage('products')} className="link-btn">Productos</button></li>
-                <li><button className="link-btn">Nosotros</button></li>
-              </ul>
-            </div>
-            <div className="footer-contact">
-              <h4>Contacto</h4>
-              <p>Email: hola@juegoskurimi.com</p>
-              <p>WhatsApp: +54 9 11 1234 5678</p>
+            <div className="footer-bottom">
+              <p>&copy; 2026 Juegos Kurimi. Todos los derechos reservados.</p>
             </div>
           </div>
-          <div className="footer-bottom">
-            <p>&copy; 2026 Juegos Kurimi. Todos los derechos reservados.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </Router>
   );
 };
 

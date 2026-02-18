@@ -1,23 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-interface NavbarProps {
-  setPage: (page: string) => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ setPage }) => {
+const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="logo" onClick={() => setPage('home')} style={{ cursor: 'pointer' }}>
+        <Link to="/" className="logo">
           <h1>Juegos<span>Kurimi</span></h1>
-        </div>
+        </Link>
         <ul className="nav-links">
-          <li><button onClick={() => setPage('home')} className="nav-link-btn">Inicio</button></li>
-          <li><button onClick={() => setPage('products')} className="nav-link-btn">Productos</button></li>
-          <li><button className="nav-link-btn">Quiénes Somos</button></li>
-          <li><button className="nav-link-btn">Contacto</button></li>
-          <li className="nav-cta"><button onClick={() => setPage('products')} className="nav-link-btn cta">Tienda Online</button></li>
+          <li><Link to="/" className="nav-link-btn">Inicio</Link></li>
+          <li><Link to="/productos" className="nav-link-btn">Productos</Link></li>
+          <li><Link to="/contacto" className="nav-link-btn">Contacto</Link></li>
+          <li className="nav-cta"><Link to="/productos" className="nav-link-btn cta">Tienda Online</Link></li>
         </ul>
       </div>
     </nav>

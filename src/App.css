@@ -218,7 +218,18 @@
   margin-bottom: 10px;
 }
 
-.footer-links ul li a:hover {
+.link-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: #bbb;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s;
+}
+
+.link-btn:hover {
   color: var(--primary);
 }
 

@@ -8,6 +8,10 @@ interface Slide {
   subtitle: string;
 }
 
+interface SlideshowProps {
+  onCtaClick: () => void;
+}
+
 const slides: Slide[] = [
   {
     id: 1,
@@ -35,7 +39,7 @@ const slides: Slide[] = [
   }
 ];
 
-const Slideshow: React.FC = () => {
+const Slideshow: React.FC<SlideshowProps> = ({ onCtaClick }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -59,7 +63,7 @@ const Slideshow: React.FC = () => {
           <div className="slide-content">
             <h2>{slide.title}</h2>
             <p>{slide.subtitle}</p>
-            <button className="cta-button">Ver Colección</button>
+            <button className="cta-button" onClick={onCtaClick}>Ver Colección</button>
           </div>
         </div>
       ))}
